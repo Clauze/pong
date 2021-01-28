@@ -15,6 +15,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JRadioButton;
 import java.awt.Font;
+import javax.swing.ButtonGroup;
 
 public class ShowMyIp extends JPanel {
 	private JPanel panel;
@@ -36,6 +37,7 @@ public class ShowMyIp extends JPanel {
 	private JPanel panel_8;
 	private JRadioButton rdbtnManual;
 	private JRadioButton rdbtnAuto;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Create the panel.
@@ -111,9 +113,11 @@ public class ShowMyIp extends JPanel {
 		panel_3.add(panel_8);
 		
 		rdbtnManual = new JRadioButton("manuale");
+		buttonGroup.add(rdbtnManual);
 		panel_8.add(rdbtnManual);
 		
 		rdbtnAuto = new JRadioButton("automatico");
+		buttonGroup.add(rdbtnAuto);
 		panel_8.add(rdbtnAuto);
 
 	}

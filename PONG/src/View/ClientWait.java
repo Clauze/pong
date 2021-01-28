@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 public class ClientWait extends JPanel {
 	private JPanel panel;
@@ -32,6 +33,7 @@ public class ClientWait extends JPanel {
 	private JPanel panel_8;
 	private JLabel lblNewLabel_2;
 	private JTextField textField_1;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	/**
 	 * Create the panel.
 	 */
@@ -112,9 +114,11 @@ setLayout(new BorderLayout(0, 0));
 		panel_3.add(panel_7);
 		
 		rdbtnManual = new JRadioButton("manuale");
+		buttonGroup.add(rdbtnManual);
 		panel_7.add(rdbtnManual);
 		
 		rdbtnAuto = new JRadioButton("automatico");
+		buttonGroup.add(rdbtnAuto);
 		panel_7.add(rdbtnAuto);
 
 	}
