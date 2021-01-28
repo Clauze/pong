@@ -5,37 +5,46 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import Model.Slider;
 import View.Finestra;
 import View.Gioco;
-import View.ShowMyIp;
+import View.ServerWait;
 
 public class Server implements Runnable{
 	
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private Finestra f;
+	private String userName;
+	private int porta=9999;
 	
-	public Server(Finestra f) {
+	public Server(Finestra f,String userName) {
 		super();
 		this.f=f;
+		this.userName=userName;
+		porta=9999;
 	}
 
-
+	public Server(Finestra f,String userName,int porta) {
+		super();
+		this.f=f;
+		this.userName=userName;
+		this.porta=porta;
+	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+
 		try {
-			serverSocket = new ServerSocket(9999);
+			f.getsW().getLblNewLabel_1().setVisible(true);
+			f.getsW().revalidate();
+			serverSocket = new ServerSocket(porta);
+			Gioco g=new Gioco(new Slider(userName, 30, 0));
 			while(true) {
-				Gioco g=new Gioco(new Slider("marco", 30, 0));
-				f.changePanel(new ShowMyIp());
 				socket=serverSocket.accept();
 				ObjectInputStream streamClient= new ObjectInputStream(socket.getInputStream());
 				Slider s=(Slider) streamClient.readObject();
-				System.out.println("ho letto");
 				ObjectOutputStream streamBall= new ObjectOutputStream(socket.getOutputStream());				
 				streamBall.writeObject(g.getPallina());
 				streamBall.writeObject(g.getserverPlayer());

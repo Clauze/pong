@@ -17,19 +17,29 @@ public class Client implements Runnable{
 	private Socket socket;
 	private Finestra f;
 	private String ipServer;
+	private String userName;
+	private int porta;
 	
-	public Client(Finestra f, String ipServer) {
+	public Client(Finestra f, String userName, String ipServer) {
 		this.f=f;
 		this.ipServer=ipServer;
+		this.userName=userName;
+		porta=9999;
+	}
+	
+	public Client(Finestra f, String userName, String ipServer,int porta) {
+		this.f=f;
+		this.userName=userName;
+		this.ipServer=ipServer;
+		this.porta=porta;
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			System.out.println("dsd"+f.getSize().getWidth());
-			GiocoClient g=new GiocoClient(new Slider("marco", (int)(f.getSize().getWidth() - 79), 0));
-			socket= new Socket(ipServer, 9999);
+			GiocoClient g=new GiocoClient(new Slider(userName, (int)(f.getSize().getWidth() - 79), 0));
+			socket= new Socket(ipServer, porta);
 			ObjectOutputStream streamBall= new ObjectOutputStream(socket.getOutputStream());
 			streamBall.writeObject(g.getClientPlayer());
 			System.out.println("ho spedito");

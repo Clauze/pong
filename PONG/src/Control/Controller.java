@@ -26,18 +26,15 @@ public class Controller implements ActionListener,KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==frame.getBtnCrea()) {			
-			Server c=new Server(frame);
-			Thread t=new Thread(c);
-			t.start();
+		if(e.getSource()==frame.getBtnCrea()) {
+			new ControllerServerWait(frame);
 			
 		}
 		else {
-		//	String ipA=JOptionPane.showInputDialog("inserire ip server");
-			
-			Client c=new Client(frame,"localhost");
+			new ControllerClient(frame);
+			/*Client c=new Client(frame,"localhost");
 			Thread t=new Thread(c);
-			t.start();
+			t.start();*/
 			
 		}
 		

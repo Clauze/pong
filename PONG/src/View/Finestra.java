@@ -37,7 +37,9 @@ public class Finestra extends JFrame {
 	private JButton btnUnisciti;
 	private Gioco g=null;
 	private GiocoClient gC=null;
-	private ShowMyIp gW=null;
+	private ServerWait sW=null;
+	private ClientWait cW=null;
+
 
 	public Finestra() {
 		try {
@@ -110,31 +112,47 @@ public class Finestra extends JFrame {
 	}
 
 	public void changePanel(Gioco g) {
-		gC=null;
 		this.g=g;
 		this.remove(contentPane);
 		this.invalidate();
 		this.setContentPane(this.g);
 		this.revalidate();
+		/*gC=null;
+		sW=null;
+		cW=null;*/
 	}
 	
-	public void changePanel(ShowMyIp gW) {
-		gC=null;
-		g=null;
-		this.gW=gW;
+	public void changePanel(ClientWait cW) {
+		this.cW=cW;
 		this.remove(contentPane);
 		this.invalidate();
-		this.setContentPane(this.gW);
+		this.setContentPane(this.cW);
 		this.revalidate();
+		/*sW=null;
+		g=null;
+		gC=null;*/
+	}
+	
+	public void changePanel(ServerWait sW) {
+		this.sW=sW;
+		this.remove(contentPane);
+		this.invalidate();
+		this.setContentPane(this.sW);
+		this.revalidate();
+		/*gC=null;
+		g=null;
+		cW=null;*/
 	}
 	
 	public void changePanel(GiocoClient gC) {
-		g=null;
 		this.gC=gC;
 		this.remove(contentPane);
 		this.invalidate();
 		this.setContentPane(this.gC);
 		this.revalidate();
+		/*g=null;
+		sW=null;
+		cW=null;*/
 	}
 
 	public JButton getBtnCrea() {
@@ -159,6 +177,14 @@ public class Finestra extends JFrame {
 
 	public GiocoClient getgC() {
 		return gC;
+	}
+
+	public ServerWait getsW() {
+		return sW;
+	}
+
+	public ClientWait getcW() {
+		return cW;
 	}
 	
 	

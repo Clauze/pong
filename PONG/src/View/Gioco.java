@@ -26,7 +26,7 @@ public class Gioco extends JPanel implements Runnable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Ball pallina;
-	private Slider serverPlayer,clientPlayer;
+	private Slider serverPlayer,clientPlayer=null;
 
 	public Gioco(Slider serverPlayer) {
 		this.setLayout(null);
@@ -42,7 +42,9 @@ public class Gioco extends JPanel implements Runnable{
 		//g.drawImage(img,0,0,this.getSize().width,this.getSize().height,this);
 		g.setColor(Color.red);
 		g.fillRect(serverPlayer.getPosX(), serverPlayer.getPosY(), serverPlayer.getLunghezza(), serverPlayer.getAltezza());
-		g.fillRect(clientPlayer.getPosX(), clientPlayer.getPosY(), clientPlayer.getLunghezza(), clientPlayer.getAltezza());
+		if(clientPlayer!=null) {
+			g.fillRect(clientPlayer.getPosX(), clientPlayer.getPosY(), clientPlayer.getLunghezza(), clientPlayer.getAltezza());
+		}
 		g.fillOval(pallina.getX(), pallina.getY(), pallina.getRadius(), pallina.getRadius());
 		
 	}

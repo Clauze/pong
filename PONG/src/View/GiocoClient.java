@@ -31,7 +31,9 @@ public class GiocoClient extends JPanel implements Runnable{
 		g.clearRect(0, 0, this.getSize().width, this.getSize().height);
 		//g.drawImage(img,0,0,this.getSize().width,this.getSize().height,this);
 		g.setColor(Color.red);
-		g.fillRect(serverPlayer.getPosX(), serverPlayer.getPosY(), serverPlayer.getLunghezza(), serverPlayer.getAltezza());
+		if(serverPlayer!=null) {
+			g.fillRect(serverPlayer.getPosX(), serverPlayer.getPosY(), serverPlayer.getLunghezza(), serverPlayer.getAltezza());
+		}
 		g.fillRect(clientPlayer.getPosX(), clientPlayer.getPosY(), clientPlayer.getLunghezza(), clientPlayer.getAltezza());
 		g.fillOval(pallina.getX(), pallina.getY(), pallina.getRadius(), pallina.getRadius());
 		
