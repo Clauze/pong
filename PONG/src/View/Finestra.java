@@ -1,13 +1,11 @@
 package View;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -37,19 +35,19 @@ public class Finestra extends JFrame {
 	private JLabel lblPong;
 	private JButton btnCrea;
 	private JButton btnUnisciti;
-	private JTextArea textArea;
 	private Gioco g=null;
 	private GiocoClient gC=null;
+	private ShowMyIp gW=null;
 
 	public Finestra() {
-		setResizable(false);
-		setFont(new Font("Cambria", Font.PLAIN, 12));
-		/*try {
-			UIManager.setLookAndFeel(new FlatArcDarkContrastIJTheme());
+		try {
+			UIManager.setLookAndFeel(new FlatDarkLaf());
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
+		setResizable(false);
+		setFont(new Font("Cambria", Font.PLAIN, 12));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
@@ -97,11 +95,6 @@ public class Finestra extends JFrame {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		*/
 		this.setFocusable(true);
-		textArea = new JTextArea();
-		textArea.setColumns(10);
-		textArea.setTabSize(50);
-		textArea.setRows(3);
-		contentPane.add(textArea);
 		lblPong = new JLabel("PONG");
 		lblPong.setFont(new Font("Verdana Pro", Font.PLAIN, 14));
 		lblPong.setHorizontalAlignment(SwingConstants.CENTER);
@@ -125,6 +118,16 @@ public class Finestra extends JFrame {
 		this.revalidate();
 	}
 	
+	public void changePanel(ShowMyIp gW) {
+		gC=null;
+		g=null;
+		this.gW=gW;
+		this.remove(contentPane);
+		this.invalidate();
+		this.setContentPane(this.gW);
+		this.revalidate();
+	}
+	
 	public void changePanel(GiocoClient gC) {
 		g=null;
 		this.gC=gC;
@@ -132,14 +135,6 @@ public class Finestra extends JFrame {
 		this.invalidate();
 		this.setContentPane(this.gC);
 		this.revalidate();
-	}
-	
-	public JTextArea getTextArea() {
-		return textArea;
-	}
-
-	public void setTextArea(JTextArea textArea) {
-		this.textArea = textArea;
 	}
 
 	public JButton getBtnCrea() {

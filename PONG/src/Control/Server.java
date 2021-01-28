@@ -9,6 +9,7 @@ import java.net.Socket;
 import Model.Slider;
 import View.Finestra;
 import View.Gioco;
+import View.ShowMyIp;
 
 public class Server implements Runnable{
 	
@@ -30,6 +31,7 @@ public class Server implements Runnable{
 			serverSocket = new ServerSocket(9999);
 			while(true) {
 				Gioco g=new Gioco(new Slider("marco", 30, 0));
+				f.changePanel(new ShowMyIp());
 				socket=serverSocket.accept();
 				ObjectInputStream streamClient= new ObjectInputStream(socket.getInputStream());
 				Slider s=(Slider) streamClient.readObject();
