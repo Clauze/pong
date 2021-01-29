@@ -20,7 +20,7 @@ public class ServerWait extends JPanel {
 	private JPanel panel_3;
 	private JLabel LabelIP;
 	private JLabel Ip;
-	private JButton btnAbbandona;
+	private JButton btnIndietro;
 	private JPanel panel_4;
 	private JPanel panel_5;
 	private JLabel lblNewLabel;
@@ -49,9 +49,9 @@ public class ServerWait extends JPanel {
 		btnConnetti.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel.add(btnConnetti);
 		
-		btnAbbandona =  new JButton("Indietro");
-		btnAbbandona.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel.add(btnAbbandona);
+		btnIndietro =  new JButton("Indietro");
+		btnIndietro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panel.add(btnIndietro);
 		
 		panel_1 = new JPanel();
 		add(panel_1, BorderLayout.NORTH);
@@ -61,6 +61,7 @@ public class ServerWait extends JPanel {
 		panel_1.add(LabelIP);
 		
 		Ip = new JLabel("");
+		Ip.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel_1.add(Ip);
 		
 		panel_2 = new JPanel();
@@ -136,8 +137,8 @@ public class ServerWait extends JPanel {
 		return Ip;
 	}
 
-	public JButton getBtnAbbandona() {
-		return btnAbbandona;
+	public JButton getBtnIndietro() {
+		return btnIndietro;
 	}
 
 	public JTextField getTextFieldNickName() {

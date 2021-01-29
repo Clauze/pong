@@ -1,15 +1,16 @@
 package Control;
 
-import java.awt.Dimension;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import Model.Ball;
 import Model.Slider;
+import View.ClientWait;
 import View.Finestra;
-import View.Gioco;
 import View.GiocoClient;
 
 public class Client implements Runnable{
@@ -18,6 +19,7 @@ public class Client implements Runnable{
 	private Finestra f;
 	private String ipServer;
 	private String userName;
+	private GiocoClient gC=null;
 	private int porta;
 	
 	public Client(Finestra f, String userName, String ipServer) {
@@ -37,19 +39,20 @@ public class Client implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		f.getcW().getLblNewLabel_3().setVisible(true);
+		f.getcW().revalidate();
+		gC=new GiocoClient(new Slider(userName, (int)(f.getSize().getWidth() - 79), 0));
 		try {
-			GiocoClient g=new GiocoClient(new Slider(userName, (int)(f.getSize().getWidth() - 79), 0));
 			socket= new Socket(ipServer, porta);
 			ObjectOutputStream streamBall= new ObjectOutputStream(socket.getOutputStream());
-			streamBall.writeObject(g.getClientPlayer());
-			System.out.println("ho spedito");
+			streamBall.writeObject(gC.getClientPlayer());
 			ObjectInputStream streamPallina= new ObjectInputStream(socket.getInputStream());
 			Ball pallina= (Ball) streamPallina.readObject();
 			Slider s=(Slider) streamPallina.readObject();
-			f.changePanel(g);
+			f.changePanel(gC);
 			f.getgC().setServerPlayer(s);
 			f.getgC().setPallina(pallina);
-			new Thread(g).start();
+			new Thread(gC).start();
 			
 			if(socket.isConnected()) {
 				while(true) {
@@ -62,21 +65,40 @@ public class Client implements Runnable{
 					streamBall= new ObjectOutputStream(socket.getOutputStream());
 					streamBall.writeObject(f.getgC().getClientPlayer());
 					try {
-						Thread.sleep(10);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
-			
+			System.out.println("caca");
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "server non raggiungibile","errore server",JOptionPane.ERROR_MESSAGE);
+			ClientWait cW=new ClientWait();
+			f.changePanel(cW);
+			new ControllerClient(f);
+			if(f.getgC()!=null) {
+				f.getgC().setFlag(true);
+			}
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "errore ricezione dati","errore server",JOptionPane.ERROR_MESSAGE);
+			ClientWait cW=new ClientWait();
+			f.changePanel(cW);
+			new ControllerClient(f);
+			if(f.getgC()!=null) {
+				f.getG().setFlag(true);
+			}
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 	

@@ -17,12 +17,14 @@ public class GiocoClient extends JPanel implements Runnable{
 	private static final long serialVersionUID = 1L;
 	private Ball pallina;
 	private Slider serverPlayer,clientPlayer;
+	private boolean flag=false;
 
 	public GiocoClient(Slider clientPlayer) {
 		this.setLayout(null);
 		this.setBackground(Color.green);
 		pallina=new Ball(100, 100, 4, 4, 20, 1264, 681);
 		this.clientPlayer=clientPlayer;
+		flag=false;
 		
 	}
 	
@@ -60,7 +62,7 @@ public class GiocoClient extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		this.clientPlayer.setD(new Dimension(this.getSize().width, this.getSize().height));
-		while(true)	{
+		while(!flag)	{
 			clientPlayer.move();
 			try {
 				Thread.sleep(10);
@@ -71,14 +73,9 @@ public class GiocoClient extends JPanel implements Runnable{
 			repaint();
 		}
 	}
-	
-	
-	/*public void collision() {
-		if((pallina.getPosX()+pallina.getRaggio()>= serverPlayer.getPosX() && pallina.getPosX() < serverPlayer.getPosX()+serverPlayer.getLunghezza())&&(pallina.getPosY()+pallina.getRaggio()>= serverPlayer.getPosY() && pallina.getPosY() < serverPlayer.getPosY()+serverPlayer.getAltezza())){
-			pallina.setVelY(pallina.getVelY()*-1);
-			pallina.setPos(serverPlayer.getPosY()-pallina.getRaggio());
-		}
-	}*/
 
-
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+	
 }

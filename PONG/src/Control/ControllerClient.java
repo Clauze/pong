@@ -2,6 +2,12 @@ package Control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -17,9 +23,17 @@ public class ControllerClient implements ActionListener{
 		super();
 		this.f = f;
 		this.f.changePanel(new ClientWait());
+		try {
+			this.f.getcW().getIp().setText(InetAddress.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.f.getcW().getBtnConnetti().addActionListener(this);
+		this.f.getcW().getBtnIndietro().addActionListener(this);
 		this.f.getcW().getRdbtnAuto().addActionListener(this);
 		this.f.getcW().getRdbtnManual().addActionListener(this);
+		this.f.getcW().getIp().setText(getMyIp());
 	}
 
 	@Override
@@ -28,14 +42,15 @@ public class ControllerClient implements ActionListener{
 		if(e.getSource() == f.getcW().getBtnConnetti()) {
 
 			if(!f.getcW().getTextFieldNickName().getText().isBlank()) {
-				if(!f.getcW().getTextFieldIPServer().getText().isBlank()) {
+
+				if(!f.getcW().getTextFieldIPServer().getText().isBlank() && checkIPAddress(f.getcW().getTextFieldIPServer().getText())) {
 					if(!f.getcW().getRdbtnManual().isSelected() ) {
 						Client c=new Client(f,f.getcW().getTextFieldNickName().getText(),f.getcW().getTextFieldIPServer().getText());
 						Thread t=new Thread(c);
 						t.start();
 					}
 					else {
-						if(!f.getcW().getTextFieldPortaServer().getText().isBlank()) {
+						if(!f.getcW().getTextFieldPortaServer().getText().isBlank() && checkPort(f.getcW().getTextFieldPortaServer().getText())) {
 							int port=0;
 							try {
 								port=Integer.parseInt(f.getcW().getTextFieldPortaServer().getText());
@@ -62,15 +77,20 @@ public class ControllerClient implements ActionListener{
 					f.getcW().getRdbtnAuto().setEnabled(false);
 					f.getcW().getTextFieldNickName().setEnabled(false);
 					f.getcW().getTextFieldPortaServer().setEnabled(false);
+					f.getcW().getBtnIndietro().setEnabled(false);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "nessun server inserito","inserire server",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "nessun server inserito o indirizzo ip non corretto","inserire server",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "nessun nome inserito","inserire nome",JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		else if(e.getSource() == f.getcW().getBtnIndietro()) {
+			f.changePanel();
+		}
+
 		else if(e .getSource() == f.getcW().getRdbtnManual()) {
 			f.getcW().getTextFieldPortaServer().setVisible(true);
 			f.getcW().getLblNewLabel_2().setVisible(true);
@@ -83,4 +103,43 @@ public class ControllerClient implements ActionListener{
 		}
 	}
 	
+	private String getMyIp() {
+		String s=null;
+
+		try {
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress("google.com", 80));
+			s= socket.getLocalAddress().toString();
+			s=s.substring(1);
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				s=InetAddress.getLocalHost().toString();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		return s;
+
+	}
+	
+	private boolean checkPort(String str) {  
+		  Pattern pPattern = Pattern.compile("\\d{1,4}");  
+		  return pPattern.matcher(str).matches();  
+	}  
+	
+	 // - Check IP address type- //
+	private boolean checkIPAddress(String str) { 
+		if(str.compareTo("localhost")==0) {
+			return true;
+		}
+		else {
+		  Pattern ipPattern = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");  
+		  return ipPattern.matcher(str).matches();  
+		}
+	}
 }

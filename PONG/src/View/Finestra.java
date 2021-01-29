@@ -111,15 +111,25 @@ public class Finestra extends JFrame {
 		contentPane.add(btnUnisciti, "16, 14");
 	}
 
+	public void changePanel() {
+		this.remove(contentPane);
+		this.invalidate();
+		this.setContentPane(this.contentPane);
+		this.revalidate();
+		gC=null;
+		sW=null;
+		cW=null;
+	}
+	
 	public void changePanel(Gioco g) {
 		this.g=g;
 		this.remove(contentPane);
 		this.invalidate();
 		this.setContentPane(this.g);
 		this.revalidate();
-		/*gC=null;
+		gC=null;
 		sW=null;
-		cW=null;*/
+		cW=null;
 	}
 	
 	public void changePanel(ClientWait cW) {
@@ -128,9 +138,9 @@ public class Finestra extends JFrame {
 		this.invalidate();
 		this.setContentPane(this.cW);
 		this.revalidate();
-		/*sW=null;
+		sW=null;
 		g=null;
-		gC=null;*/
+		gC=null;
 	}
 	
 	public void changePanel(ServerWait sW) {
@@ -139,9 +149,9 @@ public class Finestra extends JFrame {
 		this.invalidate();
 		this.setContentPane(this.sW);
 		this.revalidate();
-		/*gC=null;
+		gC=null;
 		g=null;
-		cW=null;*/
+		cW=null;
 	}
 	
 	public void changePanel(GiocoClient gC) {

@@ -3,6 +3,11 @@ package Control;
 import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
@@ -17,8 +22,9 @@ public class ControllerServerWait implements ActionListener{
 		super();
 		this.f = f;
 		this.f.changePanel(new ServerWait());
-		this.f.getsW().getBtnAbbandona().addActionListener(this);
+		this.f.getsW().getIp().setText(getMyIp());
 		this.f.getsW().getBtnConnetti().addActionListener(this);
+		this.f.getsW().getBtnIndietro().addActionListener(this);
 		this.f.getsW().getRdbtnAuto().addActionListener(this);
 		this.f.getsW().getRdbtnManual().addActionListener(this);
 	}
@@ -27,9 +33,11 @@ public class ControllerServerWait implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == f.getsW().getBtnConnetti()) {
-
+			System.out.println("ciao connetti");
 			if(!f.getsW().getTextFieldNickName().getText().isBlank()) {
+				System.out.println("icoa");
 				if(!f.getsW().getRdbtnManual().isSelected() ) {
+					System.out.println("creo server");
 					Server c=new Server(f,f.getsW().getTextFieldNickName().getText());
 					Thread t=new Thread(c);
 					t.start();
@@ -62,11 +70,17 @@ public class ControllerServerWait implements ActionListener{
 				f.getsW().getRdbtnAuto().setEnabled(false);
 				f.getsW().getTextFieldNickName().setEnabled(false);
 				f.getsW().getTextFieldPorta().setEnabled(false);
+				f.getsW().getBtnIndietro().setEnabled(false);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "nessun nome inserito","inserire nome",JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		
+		else if(e.getSource() == f.getsW().getBtnIndietro()) {
+			f.changePanel();
+		}
+		
 		else if(e .getSource() == f.getsW().getRdbtnManual()) {
 			f.getsW().getTextFieldPorta().setVisible(true);
 			f.getsW().getLblNewLabel_2().setVisible(true);
@@ -79,6 +93,28 @@ public class ControllerServerWait implements ActionListener{
 		}
 	}
 	
-	
+	private String getMyIp() {
+		String s=null;
+
+		try {
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress("google.com", 80));
+			s= socket.getLocalAddress().toString();
+			s=s.substring(1);
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				s=InetAddress.getLocalHost().toString();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		return s;
+
+	}
 	
 }

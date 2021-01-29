@@ -35,6 +35,7 @@ public class ClientWait extends JPanel {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton btnConnetti;
 	private JLabel lblNewLabel_3;
+	private JButton btnIndietro;
 	/**
 	 * Create the panel.
 	 */
@@ -47,6 +48,10 @@ public class ClientWait extends JPanel {
 		btnConnetti = new JButton("Connetti");
 		btnConnetti.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel.add(btnConnetti);
+		
+		btnIndietro = new JButton("Indietro");
+		btnIndietro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panel.add(btnIndietro);
 		
 		panel_1 = new JPanel();
 		add(panel_1, BorderLayout.NORTH);
@@ -72,6 +77,7 @@ public class ClientWait extends JPanel {
 		panel_3.add(panel_6);
 		
 		lblNewLabel_3 = new JLabel("Mi connetto al server ...");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_3.setVisible(false);
 		panel_6.add(lblNewLabel_3);
 		
@@ -129,7 +135,7 @@ public class ClientWait extends JPanel {
 	}
 	
 	public JLabel getLblNewLabel_3() {
-		return lblNewLabel_2;
+		return lblNewLabel_3;
 	}
 	
 	public JLabel getLblNewLabel_2() {
@@ -162,5 +168,11 @@ public class ClientWait extends JPanel {
 	
 	public JButton getBtnConnetti() {
 		return btnConnetti;
+	}
+
+	public JButton getBtnIndietro() {
+		return btnIndietro;
 	}	
+	
+	
 }

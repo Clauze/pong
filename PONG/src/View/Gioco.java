@@ -27,12 +27,14 @@ public class Gioco extends JPanel implements Runnable{
 	private static final long serialVersionUID = 1L;
 	private Ball pallina;
 	private Slider serverPlayer,clientPlayer=null;
+	private boolean flag=false;
 
 	public Gioco(Slider serverPlayer) {
 		this.setLayout(null);
 		this.setBackground(Color.green);
 		pallina=new Ball(100, 100, 4, 4, 20, 1264, 681);
 		this.serverPlayer=serverPlayer;
+		flag=false;
 		
 	}
 	
@@ -69,13 +71,8 @@ public class Gioco extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		this.serverPlayer.setD(new Dimension(this.getSize().width, this.getSize().height));
-		try {
-			System.out.println("localhost:"+InetAddress.getLocalHost().getHostAddress());
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		while(true)	{
+		
+		while(!flag)	{
 			pallina.move();
 			collision();
 			serverPlayer.move();
@@ -101,5 +98,11 @@ public class Gioco extends JPanel implements Runnable{
 		}
 	}
 
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+	
+	
 }
 
