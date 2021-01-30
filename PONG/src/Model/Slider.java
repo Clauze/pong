@@ -75,6 +75,14 @@ public class Slider implements Serializable{
 		this.altezza = altezza;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public void move() {
 		this.setPosY(velY);
 		if(this.posY < 0) {

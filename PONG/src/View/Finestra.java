@@ -1,22 +1,44 @@
 package View;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneLightContrastIJTheme;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
+
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
+import java.awt.Color;
+
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JSplitPane;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -39,77 +61,83 @@ public class Finestra extends JFrame {
 	private GiocoClient gC=null;
 	private ServerWait sW=null;
 	private ClientWait cW=null;
-
+	private Image img;
+	private Font font;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JPanel panel_4;
 
 	public Finestra() {
+
 		try {
-			UIManager.setLookAndFeel(new FlatDarkLaf());
+			UIManager.setLookAndFeel(new FlatArcDarkContrastIJTheme());
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("bin\\PixelMplus10-Regular.ttf")).deriveFont(60f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+		} catch (FontFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		BufferedImage icon;
+		try {
+			icon = ImageIO.read(getClass().getResource("/immagini/pong-logo.jpg"));
+			this.setIconImage(icon);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		setResizable(false);
-		setFont(new Font("Cambria", Font.PLAIN, 12));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		/*contentPane.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(332dlu;default)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-				new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(16dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(214dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(16dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(38dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		*/
+		
 		this.setFocusable(true);
+		contentPane.setLayout(new GridLayout(5, 1, 0, 0));
+		
+		panel_3 = new JPanel();
+		contentPane.add(panel_3);
+		
+		panel = new JPanel();
+		contentPane.add(panel);
 		lblPong = new JLabel("PONG");
-		lblPong.setFont(new Font("Verdana Pro", Font.PLAIN, 14));
+		panel.add(lblPong);
+		lblPong.setFont(font);
 		lblPong.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(lblPong, "16, 4");
+		
+		panel_1 = new JPanel();
+		contentPane.add(panel_1);
 		
 		btnCrea = new JButton("Crea");
-		btnCrea.setFont(new Font("Verdana Pro", Font.PLAIN, 11));
-		contentPane.add(btnCrea, "16, 10");
+		panel_1.add(btnCrea);
+		btnCrea.setFont(new Font("OCR A Extended", Font.PLAIN, 40));
+		
+		panel_2 = new JPanel();
+		contentPane.add(panel_2);
 		
 		btnUnisciti = new JButton("Unisciti");
-		btnUnisciti.setFont(new Font("Verdana Pro", Font.PLAIN, 11));
-		contentPane.add(btnUnisciti, "16, 14");
+		panel_2.add(btnUnisciti);
+		btnUnisciti.setFont(new Font("OCR A Extended", Font.PLAIN, 40));
+		
+		panel_4 = new JPanel();
+		contentPane.add(panel_4);
 	}
+
 
 	public void changePanel() {
 		this.remove(contentPane);

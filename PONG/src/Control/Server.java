@@ -3,18 +3,10 @@ package Control;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Enumeration;
-
 import javax.swing.JOptionPane;
-
 import Model.Slider;
-import View.ClientWait;
 import View.Finestra;
 import View.Gioco;
 import View.ServerWait;
@@ -34,6 +26,7 @@ public class Server implements Runnable{
 		this.userName=userName;
 		porta=9999;
 		flag=true;
+
 	}
 
 	public Server(Finestra f,String userName,int porta) {
@@ -54,7 +47,6 @@ public class Server implements Runnable{
 			f.getsW().getLblNewLabel_1().setVisible(true);
 			f.getsW().revalidate();
 			serverSocket = new ServerSocket(porta);
-			System.out.println("connesso");
 			Gioco g=new Gioco(new Slider(userName, 30, 0));
 				socket=serverSocket.accept();
 				ObjectInputStream streamClient= new ObjectInputStream(socket.getInputStream());
@@ -90,20 +82,20 @@ public class Server implements Runnable{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			flag=false;
-			System.out.println("cleint non raggiungibile");
 			JOptionPane.showMessageDialog(null, "client non raggiungibile","errore client",JOptionPane.ERROR_MESSAGE);
 			ServerWait sW=new ServerWait();
 			f.changePanel(sW);
 			new ControllerServerWait(f);
 			if(f.getG()!=null) {
-				System.out.println("gioco finiro");
 				f.getG().setFlag(true);
 			}
-			try {
-				serverSocket.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if(!serverSocket.isClosed()) {
+				try {
+					serverSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -124,7 +116,7 @@ public class Server implements Runnable{
 			}
 		}
 		
-		System.out.println("esco");
 
 	}
+
 }

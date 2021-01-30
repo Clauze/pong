@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import javax.swing.JOptionPane;
-
 import Model.Ball;
 import Model.Slider;
 import View.ClientWait;
@@ -34,6 +32,7 @@ public class Client implements Runnable{
 		this.userName=userName;
 		this.ipServer=ipServer;
 		this.porta=porta;
+
 	}
 
 	@Override
@@ -72,7 +71,6 @@ public class Client implements Runnable{
 					}
 				}
 			}
-			System.out.println("caca");
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -98,8 +96,9 @@ public class Client implements Runnable{
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			
 			}
 		}
 	}
-	
+
 }

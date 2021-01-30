@@ -4,14 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import View.Finestra;
 import View.Gioco;
 
-public class Controller implements ActionListener,KeyListener{
+public class Controller implements ActionListener,KeyListener,WindowListener{
 	
 	private Finestra frame;
 	
@@ -21,6 +24,7 @@ public class Controller implements ActionListener,KeyListener{
 		frame.addKeyListener(this);
 		frame.getBtnCrea().addActionListener(this);
 		frame.getBtnUnisciti().addActionListener(this);
+		frame.addWindowListener(this);
 	}
 
 	@Override
@@ -85,6 +89,54 @@ public class Controller implements ActionListener,KeyListener{
 				frame.getgC().getClientPlayer().setVelY(0);
 			}
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		int a=JOptionPane.showConfirmDialog(null, "sei sicuro di voler uscire?","vuoi uscire",JOptionPane.YES_NO_OPTION);
+		if(a == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+		else {
+			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		}
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

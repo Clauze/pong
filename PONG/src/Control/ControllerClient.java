@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
@@ -59,10 +60,12 @@ public class ControllerClient implements ActionListener{
 								// TODO: handle exception
 								JOptionPane.showMessageDialog(null, "formato porta non corretto, impostata porta di default 9999","errore porta",JOptionPane.ERROR_MESSAGE);
 								port=9999;
+							
 							}
 							Client c=new Client(f,f.getcW().getTextFieldNickName().getText(),f.getcW().getTextFieldIPServer().getText(),port);
 							Thread t=new Thread(c);
 							t.start();
+							
 						}
 						else {
 							int port=9999;
@@ -128,7 +131,7 @@ public class ControllerClient implements ActionListener{
 	}
 	
 	private boolean checkPort(String str) {  
-		  Pattern pPattern = Pattern.compile("\\d{1,4}");  
+		  Pattern pPattern = Pattern.compile("\\d{1,5}");  
 		  return pPattern.matcher(str).matches();  
 	}  
 	
@@ -142,4 +145,5 @@ public class ControllerClient implements ActionListener{
 		  return ipPattern.matcher(str).matches();  
 		}
 	}
+	
 }

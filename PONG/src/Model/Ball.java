@@ -19,6 +19,8 @@ public class Ball implements Serializable{
 	private int radius;		 // - radius of the ball
 	private int   HEIGHT;
 	private int   WIDTH;
+	private int clientPoints=0;
+	private int serverPoints=0;
 	
 	public Ball(int x, int y, double xv, double yv, int radius, int WIDTH, int HEIGHT) {
 		super();
@@ -36,6 +38,7 @@ public class Ball implements Serializable{
 		x += xv;
 		y += yv;
 		if(x > (WIDTH - radius)){ // - Calibrate the screen layer - //
+			serverPoints+=1;
 			x= (WIDTH-radius); // - set the position of the ball
 			xv = xv * -1; // - set the velocity of the ball
 
@@ -43,6 +46,7 @@ public class Ball implements Serializable{
 		
 		else if(x < 0){  // - Calibrate the screen layer - //
 			x = 0;
+			clientPoints+=1;
 			xv = xv *-1;
 		}
 		
@@ -96,4 +100,13 @@ public class Ball implements Serializable{
 		this.radius = radius;
 	}
 
+	public String getClientPoints() {
+		return String.valueOf(clientPoints);
+	}
+
+	public String getServerPoints() {
+		return String.valueOf(serverPoints);
+	}
+
+	
 }

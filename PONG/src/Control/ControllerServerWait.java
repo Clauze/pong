@@ -1,12 +1,13 @@
 package Control;
 
-import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
@@ -33,29 +34,55 @@ public class ControllerServerWait implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == f.getsW().getBtnConnetti()) {
-			System.out.println("ciao connetti");
+
 			if(!f.getsW().getTextFieldNickName().getText().isBlank()) {
-				System.out.println("icoa");
+				
 				if(!f.getsW().getRdbtnManual().isSelected() ) {
-					System.out.println("creo server");
 					Server c=new Server(f,f.getsW().getTextFieldNickName().getText());
 					Thread t=new Thread(c);
 					t.start();
+					f.getsW().getBtnConnetti().setEnabled(false);
+					f.getsW().getRdbtnManual().setEnabled(false);
+					f.getsW().getRdbtnAuto().setEnabled(false);
+					f.getsW().getTextFieldNickName().setEnabled(false);
+					f.getsW().getTextFieldPorta().setEnabled(false);
+					f.getsW().getBtnIndietro().setEnabled(false);
 				}
 				else {
 					if(!f.getsW().getTextFieldPorta().getText().isBlank()) {
 						int port;
 						try {
 							port=Integer.parseInt(f.getsW().getTextFieldPorta().getText());
+							if(checkPort(port)) {
+								JOptionPane.showMessageDialog(null, " porta inserita già usata","errore porta",JOptionPane.ERROR_MESSAGE);
+							}
+							else {
+								Server c=new Server(f,f.getsW().getTextFieldNickName().getText(),port);
+								Thread t=new Thread(c);
+								t.start();
+								f.getsW().getBtnConnetti().setEnabled(false);
+								f.getsW().getRdbtnManual().setEnabled(false);
+								f.getsW().getRdbtnAuto().setEnabled(false);
+								f.getsW().getTextFieldNickName().setEnabled(false);
+								f.getsW().getTextFieldPorta().setEnabled(false);
+								f.getsW().getBtnIndietro().setEnabled(false);
+							}
 						}
 						catch (Exception e1) {
 							// TODO: handle exception
 							JOptionPane.showMessageDialog(null, "formato porta non corretto, impostata porta di default 9999","errore porta",JOptionPane.ERROR_MESSAGE);
 							port=9999;
+							Server c=new Server(f,f.getsW().getTextFieldNickName().getText(),port);
+							Thread t=new Thread(c);
+							t.start();
+							f.getsW().getBtnConnetti().setEnabled(false);
+							f.getsW().getRdbtnManual().setEnabled(false);
+							f.getsW().getRdbtnAuto().setEnabled(false);
+							f.getsW().getTextFieldNickName().setEnabled(false);
+							f.getsW().getTextFieldPorta().setEnabled(false);
+							f.getsW().getBtnIndietro().setEnabled(false);
 						}
-						Server c=new Server(f,f.getsW().getTextFieldNickName().getText(),port);
-						Thread t=new Thread(c);
-						t.start();
+						
 					}
 					else {
 						int port=9999;
@@ -63,14 +90,14 @@ public class ControllerServerWait implements ActionListener{
 						Server c=new Server(f,f.getsW().getTextFieldNickName().getText(),port);
 						Thread t=new Thread(c);
 						t.start();
+						f.getsW().getBtnConnetti().setEnabled(false);
+						f.getsW().getRdbtnManual().setEnabled(false);
+						f.getsW().getRdbtnAuto().setEnabled(false);
+						f.getsW().getTextFieldNickName().setEnabled(false);
+						f.getsW().getTextFieldPorta().setEnabled(false);
+						f.getsW().getBtnIndietro().setEnabled(false);
 					}
 				}
-				f.getsW().getBtnConnetti().setEnabled(false);
-				f.getsW().getRdbtnManual().setEnabled(false);
-				f.getsW().getRdbtnAuto().setEnabled(false);
-				f.getsW().getTextFieldNickName().setEnabled(false);
-				f.getsW().getTextFieldPorta().setEnabled(false);
-				f.getsW().getBtnIndietro().setEnabled(false);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "nessun nome inserito","inserire nome",JOptionPane.ERROR_MESSAGE);
@@ -117,4 +144,18 @@ public class ControllerServerWait implements ActionListener{
 
 	}
 	
+	private boolean checkPort(int port) {
+		 boolean result = true;
+
+				try {
+					new ServerSocket(port).close();
+				    result = false;
+				} catch (IOException e) {
+					
+					// TODO Auto-generated catch block
+				}
+			
+
+		  return result; 
+	}
 }

@@ -3,7 +3,13 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -35,33 +41,45 @@ public class ServerWait extends JPanel {
 	private JRadioButton rdbtnAuto;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton btnConnetti;
-
+	private Font font;
 	/**
 	 * Create the panel.
 	 */
 	public ServerWait() {
 		setLayout(new BorderLayout(0, 0));
 		
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("bin\\PixelMplus10-Regular.ttf")).deriveFont(30f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+		} catch (FontFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		
 		btnConnetti = new JButton("Connetti");
-		btnConnetti.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnConnetti.setFont(font);
 		panel.add(btnConnetti);
 		
 		btnIndietro =  new JButton("Indietro");
-		btnIndietro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnIndietro.setFont(font);
 		panel.add(btnIndietro);
 		
 		panel_1 = new JPanel();
 		add(panel_1, BorderLayout.NORTH);
 		
 		LabelIP = new JLabel("il tuo indirizzo ip: ");
-		LabelIP.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		LabelIP.setFont(font);
 		panel_1.add(LabelIP);
 		
 		Ip = new JLabel("");
-		Ip.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		Ip.setFont(font);
 		panel_1.add(Ip);
 		
 		panel_2 = new JPanel();
@@ -81,25 +99,37 @@ public class ServerWait extends JPanel {
 		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		lblNewLabel = new JLabel("Inserire nickname");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setFont(font);
 		panel_4.add(lblNewLabel);
 		
 		textFieldNickName = new JTextField();
-		textFieldNickName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		textFieldNickName.setFont(font);
+		
 		panel_4.add(textFieldNickName);
 		textFieldNickName.setColumns(10);
-		
+		textFieldNickName.addKeyListener(new KeyAdapter() {
+	    	public void keyTyped(KeyEvent e) {
+	    		if (textFieldNickName.getText().length() >= 10 )
+	    			e.consume();
+	   		}
+	    });
 		panel_7 = new JPanel();
 		panel_3.add(panel_7);
 		
 		lblNewLabel_2 = new JLabel("Inserire porta server");
 		lblNewLabel_2.setVisible(false);;
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_2.setFont(font);
 		panel_7.add(lblNewLabel_2);
 		
 		textFieldPorta = new JTextField();
 		textFieldPorta.setVisible(false);
-		textFieldPorta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		textFieldPorta.addKeyListener(new KeyAdapter() {
+	    	public void keyTyped(KeyEvent e) {
+	    		if (textFieldPorta.getText().length() >= 5 )
+	    			e.consume();
+	   		}
+	    });
+		textFieldPorta.setFont(font);
 		textFieldPorta.setColumns(10);
 		panel_7.add(textFieldPorta);
 		
@@ -109,17 +139,19 @@ public class ServerWait extends JPanel {
 		
 		lblNewLabel_1 = new JLabel("Aspetto un altro giocatore....");
 		lblNewLabel_1.setVisible(false);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1.setFont(font);
 		panel_5.add(lblNewLabel_1);
 		
 		panel_8 = new JPanel();
 		panel_3.add(panel_8);
 		
 		rdbtnAuto = new JRadioButton("automatico");
+		rdbtnAuto.setFont(font);
 		buttonGroup.add(rdbtnAuto);
 		panel_8.add(rdbtnAuto);
 		
 		rdbtnManual = new JRadioButton("manuale");
+		rdbtnManual.setFont(font);
 		buttonGroup.add(rdbtnManual);
 		panel_8.add(rdbtnManual);
 
