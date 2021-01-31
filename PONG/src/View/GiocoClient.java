@@ -27,7 +27,6 @@ public class GiocoClient extends JPanel implements Runnable{
 	private Ball pallina;
 	private Slider serverPlayer,clientPlayer;
 	private boolean flag=false;
-	private JButton lascia;
 	private Font font;
 
 	public GiocoClient(Slider clientPlayer) {
@@ -44,7 +43,6 @@ public class GiocoClient extends JPanel implements Runnable{
 			e1.printStackTrace();
 		}
 		pallina=new Ball(100, 100, 4, 4, 20, 1264, 681);
-		lascia=new JButton("lascia");
 		this.clientPlayer=clientPlayer;
 		flag=false;
 		
@@ -52,9 +50,7 @@ public class GiocoClient extends JPanel implements Runnable{
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//g.clearRect(0, 0, this.getSize().width, this.getSize().height);
 		g.setColor(Color.white);
-		//g.drawImage(image,0,0,this.getSize().width,this.getSize().height,this);
 		Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(10));
         g2.draw(new Line2D.Float(this.getSize().width/2, 0, this.getSize().width/2, this.getSize().height));
@@ -93,8 +89,6 @@ public class GiocoClient extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		this.clientPlayer.setD(new Dimension(this.getSize().width, this.getSize().height));
-		lascia.setBounds(this.getSize().width/2,20,60,30);
-		this.add(lascia);
 		while(!flag)	{
 			clientPlayer.move();
 			try {
@@ -104,6 +98,9 @@ public class GiocoClient extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 			repaint();
+			if(pallina.getClientPoints().compareTo("5") == 0 || pallina.getServerPoints().compareTo("5") == 0) {
+				flag=true;
+			}
 		}
 	}
 

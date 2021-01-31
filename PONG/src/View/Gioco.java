@@ -120,6 +120,9 @@ public class Gioco extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 			repaint();
+			if(pallina.getClientPoints().compareTo("5") == 0 || pallina.getServerPoints().compareTo("5") == 0) {
+				flag=true;
+			}
 		}
 	}
 	

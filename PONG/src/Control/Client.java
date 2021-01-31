@@ -18,6 +18,7 @@ public class Client implements Runnable{
 	private String ipServer;
 	private String userName;
 	private GiocoClient gC=null;
+	private boolean flag=true;
 	private int porta;
 	
 	public Client(Finestra f, String userName, String ipServer) {
@@ -54,7 +55,7 @@ public class Client implements Runnable{
 			new Thread(gC).start();
 			
 			if(socket.isConnected()) {
-				while(true) {
+				while(flag) {
 					
 					streamPallina= new ObjectInputStream(socket.getInputStream());
 					pallina= (Ball) streamPallina.readObject();
@@ -63,15 +64,28 @@ public class Client implements Runnable{
 					f.getgC().setPallina(pallina);
 					streamBall= new ObjectOutputStream(socket.getOutputStream());
 					streamBall.writeObject(f.getgC().getClientPlayer());
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					
+					if(pallina.getClientPoints().compareTo("5") == 0) {
+						JOptionPane.showMessageDialog(null, "complimenti sei il vincitore");
+						flag=false;
+					}
+					else if(pallina.getServerPoints().compareTo("5") == 0) {
+						JOptionPane.showMessageDialog(null,s.getName()+" è il vincitore");
+						flag=false;
+					}
+					else {
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 			socket.close();
+			ClientWait cW=new ClientWait();
+			f.changePanel(cW);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "server non raggiungibile","errore server",JOptionPane.ERROR_MESSAGE);

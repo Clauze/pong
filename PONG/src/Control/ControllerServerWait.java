@@ -37,16 +37,21 @@ public class ControllerServerWait implements ActionListener{
 
 			if(!f.getsW().getTextFieldNickName().getText().isBlank()) {
 				
-				if(!f.getsW().getRdbtnManual().isSelected() ) {
-					Server c=new Server(f,f.getsW().getTextFieldNickName().getText());
-					Thread t=new Thread(c);
-					t.start();
-					f.getsW().getBtnConnetti().setEnabled(false);
-					f.getsW().getRdbtnManual().setEnabled(false);
-					f.getsW().getRdbtnAuto().setEnabled(false);
-					f.getsW().getTextFieldNickName().setEnabled(false);
-					f.getsW().getTextFieldPorta().setEnabled(false);
-					f.getsW().getBtnIndietro().setEnabled(false);
+				if(!f.getsW().getRdbtnManual().isSelected()) {
+					if(checkPort(9999)) {
+						JOptionPane.showMessageDialog(null, " porta già usata","errore porta",JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						Server c=new Server(f,f.getsW().getTextFieldNickName().getText());
+						Thread t=new Thread(c);
+						t.start();
+						f.getsW().getBtnConnetti().setEnabled(false);
+						f.getsW().getRdbtnManual().setEnabled(false);
+						f.getsW().getRdbtnAuto().setEnabled(false);
+						f.getsW().getTextFieldNickName().setEnabled(false);
+						f.getsW().getTextFieldPorta().setEnabled(false);
+						f.getsW().getBtnIndietro().setEnabled(false);
+					}
 				}
 				else {
 					if(!f.getsW().getTextFieldPorta().getText().isBlank()) {
@@ -151,7 +156,7 @@ public class ControllerServerWait implements ActionListener{
 					new ServerSocket(port).close();
 				    result = false;
 				} catch (IOException e) {
-					
+					System.out.println("erroere");
 					// TODO Auto-generated catch block
 				}
 			

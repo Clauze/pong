@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javax.swing.JOptionPane;
+
+import Model.Ball;
 import Model.Slider;
 import View.Finestra;
 import View.Gioco;
@@ -44,10 +46,11 @@ public class Server implements Runnable{
 
 		try {
 			if(flag) {
-			f.getsW().getLblNewLabel_1().setVisible(true);
-			f.getsW().revalidate();
-			serverSocket = new ServerSocket(porta);
-			Gioco g=new Gioco(new Slider(userName, 30, 0));
+				
+				f.getsW().getLblNewLabel_1().setVisible(true);
+				f.getsW().revalidate();
+				serverSocket = new ServerSocket(porta);
+				Gioco g=new Gioco(new Slider(userName, 30, 0));
 				socket=serverSocket.accept();
 				ObjectInputStream streamClient= new ObjectInputStream(socket.getInputStream());
 				Slider s=(Slider) streamClient.readObject();
@@ -57,27 +60,46 @@ public class Server implements Runnable{
 				f.changePanel(g);
 				f.getG().setClientPlayer(s);
 				new Thread(g).start();
-
+				Ball pallina;
 				if(socket.isConnected()) {
 					while(flag) {
+						pallina=f.getG().getPallina();
 						streamBall= new ObjectOutputStream(socket.getOutputStream());
-						streamBall.writeObject(f.getG().getPallina());
+						streamBall.writeObject(pallina);
 						streamBall.writeObject(f.getG().getserverPlayer());
 						streamClient= new ObjectInputStream(socket.getInputStream());
 						s=(Slider) streamClient.readObject();
 						f.getG().setClientPlayer(s);
-						try {
-							Thread.sleep(1);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						if(pallina.getClientPoints().compareTo("5") == 0) {
+							JOptionPane.showMessageDialog(null, s.getName()+" è il vincitore");
+							flag=false;
 						}
-
+						else if(pallina.getServerPoints().compareTo("5") == 0) {
+							JOptionPane.showMessageDialog(null,"complimenti sei il vincitore");
+							flag=false;
+						}
+						else {
+							try {
+								Thread.sleep(1);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						
 					}
-				
-				
-				socket.close();
+
 				}
+				socket.close();
+				try {
+					serverSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ServerWait sW=new ServerWait();
+				f.changePanel(sW);
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -108,11 +130,13 @@ public class Server implements Runnable{
 			if(f.getG()!=null) {
 				f.getG().setFlag(true);
 			}
-			try {
-				serverSocket.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if(!serverSocket.isClosed()) {
+				try {
+					serverSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		
